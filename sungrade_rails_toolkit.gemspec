@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rack", ">= 1.4"
   spec.add_dependency "request_store", "~> 1.4"
   spec.add_dependency "faraday", "~> 0.15"
+  spec.add_dependency "redis"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"

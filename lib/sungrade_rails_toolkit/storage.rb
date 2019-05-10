@@ -19,10 +19,6 @@ module SungradeRailsToolkit
       storage.fetch(:jwt) { nil }
     end
 
-    def user_token
-      storage.fetch(:user_token) { nil }
-    end
-
     def serialize_from_env!(env)
       token = env.fetch(SungradeRailsToolkit.config.user_token_header) { nil }
       return unless token
@@ -31,12 +27,20 @@ module SungradeRailsToolkit
           token, SungradeRailsToolkit.config.jwt_secret, true, { algorithm: SungradeRailsToolkit.config.jwt_algorithm }
         ).first["sub"]
       )
+      redis_conn = Redis.new(SungradeRailsToolkit.config.auth_redis_params)
 
       write(:request_id, env.fetch("HTTP_X_REQUEST_ID", nil))
-      write(:current_user, User.serialize(data.fetch("current_user")))
-      write(:absolute_user, User.serialize(data.fetch("absolute_user")))
+      current_user_identifier = data.fetch("current_user_identifier", nil)
+      if current_user_identifier
+        current_user = User.for_identifier(current_user_identifier)
+        write(:current_user, current_user) if current_user
+      end
+      absolute_user_identifier = data.fetch("absolute_user_identifier", nil)
+      if absolute_user_identifier
+        absolute_user =  User.for_identifier(absolute_user_identifier)
+        write(:absolute_user, absolute_user) if absolute_user
+      end
       write(:jwt, token)
-      write(:user_token, data.fetch("user_token"))
       data
     end
 

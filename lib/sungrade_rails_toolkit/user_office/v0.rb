@@ -2,8 +2,6 @@ module SungradeRailsToolkit
   module UserOffice
     class V0
       attr_reader :data
-      extend ApiRequestHelper
-      include ApiRequestHelper
 
       def initialize(data)
         @data = data
@@ -13,8 +11,12 @@ module SungradeRailsToolkit
         office.identifier
       end
 
+      def regions
+        office.regions
+      end
+
       def office
-        Office::V0.new(data.fetch("office"))
+        @office ||= Office::V0.new(data.fetch("office"))
       end
 
       def method_missing(meth, *args, &blk)

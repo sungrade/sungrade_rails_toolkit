@@ -3,7 +3,8 @@ module SungradeRailsToolkit
     attr_accessor :jwt_secret, :jwt_algorithm
     attr_accessor :user_token_header
     attr_accessor :user_version, :office_version
-    attr_accessor :api_gateway_base_url
+    attr_accessor :api_gateway_base_url, :api_gateway_token
+    attr_accessor :auth_redis_params
 
     class << self
       def instance

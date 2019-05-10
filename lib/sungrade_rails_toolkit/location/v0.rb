@@ -8,7 +8,7 @@ module SungradeRailsToolkit
         def find_or_create(params)
           body = params.is_a?(String) ? params : params.to_json
           res = post(
-            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/api/v0/locations/find_or_create"),
+            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/locations/find_or_create"),
             body: body,
             headers: {"Content-Type" => "application/json"}
           )
@@ -16,21 +16,24 @@ module SungradeRailsToolkit
         end
 
         def for_identifiers(*identifiers)
-          res = put(
-            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/api/v0/locations/search"),
-            headers: {"Content-Type" => "application/json"},
-            body: {
-              identifiers: identifiers.compact
-            }.to_json
-          )
-          JSON.parse(res.body).map { |user| new(user) }
+          search({identifiers: identifiers.compact})
         end
 
         def for_identifier(identifier)
           res = get(
-            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/api/v0/locations/#{identifier}"),
+            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/locations/#{identifier}"),
           )
           new(JSON.parse(res.body))
+        end
+
+        def search(params)
+          body = params.is_a?(String) ? params : params.to_json
+          res = put(
+            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/locations/search"),
+            headers: {"Content-Type" => "application/json"},
+            body: body
+          )
+          JSON.parse(res.body).map { |user| new(user) }
         end
       end
 
@@ -38,20 +41,8 @@ module SungradeRailsToolkit
         @data = data
       end
 
-      def identifier
-        data.fetch("identifier")
-      end
-
-      def longitude
-        data.fetch("longitude")
-      end
-
-      def latitude
-        data.fetch("latitude")
-      end
-
-      def address
-        data.fetch("address")
+      def method_missing(meth, *args, &blk)
+        data.fetch(meth.to_s) { super }
       end
     end
   end

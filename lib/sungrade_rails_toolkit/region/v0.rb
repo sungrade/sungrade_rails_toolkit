@@ -1,5 +1,5 @@
 module SungradeRailsToolkit
-  module Office
+  module Region
     class V0
       attr_reader :data
       extend ApiRequestHelper
@@ -8,7 +8,7 @@ module SungradeRailsToolkit
       class << self
         def internal_all
           res = get(
-            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/offices"),
+            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/regions"),
             headers: {"Content-Type" => "application/json"},
           )
           JSON.parse(res.body).fetch("data").map { |user| new(user) }
@@ -20,10 +20,20 @@ module SungradeRailsToolkit
           })
         end
 
+        def for_zip_code(zip_code)
+          for_zip_codes(zip_code)
+        end
+
+        def for_zip_codes(*zip_codes)
+          search({
+            zip_codes: zip_codes
+          })
+        end
+
         def search(body)
           body = body.is_a?(String) ? body : body.to_json
           res = put(
-            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/offices/search"),
+            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/regions/search"),
             headers: {"Content-Type" => "application/json"},
             body: body
           )
@@ -32,7 +42,7 @@ module SungradeRailsToolkit
 
         def for_identifier(identifier)
           res = get(
-            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/offices/by_identifier/#{identifier}"),
+            url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "/internal_api/v0/regions/#{identifier}"),
           )
           new(JSON.parse(res.body))
         end
@@ -44,10 +54,6 @@ module SungradeRailsToolkit
 
       def method_missing(meth, *args, &blk)
         data.fetch(meth.to_s) { super }
-      end
-
-      def regions
-        @regions ||= data.fetch("regions").map { |data| Region::V0.new(data) }
       end
     end
   end

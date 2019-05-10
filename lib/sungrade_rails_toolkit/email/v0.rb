@@ -1,5 +1,5 @@
 module SungradeRailsToolkit
-  module Phone
+  module Email
     class V0
       attr_reader :data
       extend ApiRequestHelper
@@ -11,7 +11,7 @@ module SungradeRailsToolkit
           res = post(
             url: File.join(
               SungradeRailsToolkit.config.api_gateway_base_url,
-              "/internal_api/v0/users/#{user_id}/phones"
+              "/internal_api/v0/users/#{user_id}/emails"
             ),
             body: body,
             headers: {"Content-Type" => "application/json"}
@@ -24,7 +24,7 @@ module SungradeRailsToolkit
           res = post(
             url: File.join(
               SungradeRailsToolkit.config.api_gateway_base_url,
-              "/internal_api/v0/phones/#{id}"
+              "/internal_api/v0/emails/#{id}"
             ),
             body: body,
             headers: {"Content-Type" => "application/json"}
@@ -36,7 +36,7 @@ module SungradeRailsToolkit
           res = delete(
             url: File.join(
               SungradeRailsToolkit.config.api_gateway_base_url,
-              "/internal_api/v0/phones/#{id}"
+              "/internal_api/v0/emails/#{id}"
             ),
             headers: {"Content-Type" => "application/json"}
           )
@@ -46,7 +46,7 @@ module SungradeRailsToolkit
           res = put(
             url: File.join(
               SungradeRailsToolkit.config.api_gateway_base_url,
-              "/internal_api/v0/phones/search"
+              "/internal_api/v0/emails/search"
             ),
             headers: {"Content-Type" => "application/json"},
             body: {
@@ -60,7 +60,7 @@ module SungradeRailsToolkit
           res = get(
             url: File.join(
               SungradeRailsToolkit.config.api_gateway_base_url,
-              "/internal_api/v0/phones/#{identifier}"
+              "/internal_api/v0/emails/#{identifier}"
             ),
           )
           new(JSON.parse(res.body))

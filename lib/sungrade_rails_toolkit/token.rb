@@ -8,7 +8,7 @@ module SungradeRailsToolkit
     class << self
       def fetch_and_store_token!
         res = post(
-          url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "api/internal_authentication/token"),
+          url: File.join(SungradeRailsToolkit.config.api_gateway_base_url, "internal_api/authentication/token"),
           headers: {"Content-Type" => "application/json"},
           body: {}.to_json
         )

@@ -23,7 +23,8 @@ module SungradeRailsToolkit
       response = connection.send(verb, url, body, headers) do |req|
         headers = {
           "X-Request-Id" => SungradeRailsToolkit.store.request_id,
-          "Authorization" => "Bearer #{SungradeRailsToolkit.store.jwt}"
+          "Authorization" => "Bearer #{SungradeRailsToolkit.store.jwt}",
+          "Client-Id" => SungradeRailsToolkit.config.api_gateway_token
         }
 
         req.headers.merge!(headers)
