@@ -1,6 +1,5 @@
 require "sungrade_rails_toolkit/version"
 require "sungrade_rails_toolkit/error"
-require "sungrade_rails_toolkit/middleware"
 require "sungrade_rails_toolkit/storage"
 require "sungrade_rails_toolkit/api_request_helper"
 require "sungrade_rails_toolkit/configuration"
@@ -21,6 +20,10 @@ require "sungrade_rails_toolkit/workflow_role"
 require "sungrade_rails_toolkit/helpers"
 require "sungrade_rails_toolkit/token"
 require "sungrade_rails_toolkit/controller_helpers"
+require "sungrade_rails_toolkit/middleware"
+require "sungrade_rails_toolkit/sign_in_data"
+require "sungrade_rails_toolkit/socket"
+require "sungrade_rails_toolkit/sunnova"
 require "sungrade_rails_toolkit/railtie" if defined?(Rails::Railtie)
 
 module SungradeRailsToolkit

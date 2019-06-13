@@ -1,4 +1,7 @@
 require 'rack/body_proxy'
+require 'sungrade_rails_toolkit/middlewares/sidekiq/client/user_setter'
+require 'sungrade_rails_toolkit/middlewares/sidekiq/server/helper'
+require 'sungrade_rails_toolkit/middlewares/sidekiq/server/user_setter'
 
 module SungradeRailsToolkit
   class Middleware

@@ -27,7 +27,9 @@ module SungradeRailsToolkit
             headers: {"Content-Type" => "application/json"},
             body: body
           )
-          JSON.parse(res.body).map { |user| new(user) }
+
+          identifiers = JSON.parse(res.body)["identifiers"]
+          SungradeRailsToolkit::User.for_identifiers(*identifiers)
         end
 
         def for_identifier(identifier)
@@ -51,6 +53,13 @@ module SungradeRailsToolkit
 
       def initialize(data)
         @data = data
+      end
+
+      def full_name
+        [
+          first_name,
+          last_name
+        ].compact.join(" ")
       end
 
       def method_missing(meth, *args, &blk)
@@ -84,6 +93,20 @@ module SungradeRailsToolkit
         @primary_company ||= begin
           company_user_data = data.fetch("companies", {}).fetch("primary")
           CompanyUser::V0.new(company_user_data) if company_user_data
+        end
+      end
+
+      def primary_email
+        @primary_email ||= begin
+          email_data = data.fetch("emails", {}).fetch("primary")
+          Email::V0.new(email_data) if email_data
+        end
+      end
+
+      def primary_phone
+        @primary_phone ||= begin
+          phone_data = data.fetch("phones", {}).fetch("primary")
+          Phone::V0.new(phone_data) if phone_data
         end
       end
 

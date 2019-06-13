@@ -11,6 +11,10 @@ module SungradeRailsToolkit
       storage.fetch(:absolute_user) { nil }
     end
 
+    def current_sign_in
+      storage.fetch(:current_sign_in) { nil }
+    end
+
     def request_id
       storage.fetch(:request_id) { nil }
     end
@@ -39,6 +43,12 @@ module SungradeRailsToolkit
       if absolute_user_identifier
         absolute_user =  User.for_identifier(absolute_user_identifier)
         write(:absolute_user, absolute_user) if absolute_user
+      end
+
+      sign_in_identifier = data.fetch("sign_in_identifier", nil)
+      if sign_in_identifier
+        sign_in =  SignInData.for_identifier(sign_in_identifier)
+        write(:current_sign_in, sign_in) if sign_in
       end
       write(:jwt, token)
       data
