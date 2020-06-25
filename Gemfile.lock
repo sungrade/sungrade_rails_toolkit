@@ -16,7 +16,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     jwt (2.1.0)
     multipart-post (2.0.0)
-    rack (2.0.6)
+    rack (2.2.3)
     rake (10.5.0)
     redis (4.1.0)
     request_store (1.4.1)
